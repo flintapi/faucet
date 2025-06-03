@@ -7,13 +7,13 @@ import {
 import { TanStackRouterDevtools } from '@tanstack/react-router-devtools'
 
 // import Header from '../components/Header'
-import { ThemeProvider } from "@/components/theme-provider"
 
 import TanstackQueryLayout from '../integrations/tanstack-query/layout'
 
 import appCss from '../styles.css?url'
 
 import type { QueryClient } from '@tanstack/react-query'
+import { ThemeProvider } from '@/components/theme-provider'
 import { Layout } from '@/components/craft'
 
 interface MyRouterContext {
@@ -41,8 +41,8 @@ export const Route = createRootRouteWithContext<MyRouterContext>()({
       },
       {
         rel: 'icon',
-        href: '/icon.png'
-      }
+        href: '/icon.png',
+      },
     ],
   }),
 
@@ -51,9 +51,9 @@ export const Route = createRootRouteWithContext<MyRouterContext>()({
       {/* <Header /> */}
 
       <Outlet />
-      <TanStackRouterDevtools />
+      {/* <TanStackRouterDevtools />
 
-      <TanstackQueryLayout />
+      <TanstackQueryLayout /> */}
     </RootDocument>
   ),
 })
@@ -65,7 +65,7 @@ function RootDocument({ children }: { children: React.ReactNode }) {
         <HeadContent />
       </head>
       <body>
-        <ThemeProvider storageKey='faucet-ui-theme' defaultTheme='dark'>
+        <ThemeProvider storageKey="faucet-ui-theme" defaultTheme="dark">
           {children}
         </ThemeProvider>
         <Scripts />
