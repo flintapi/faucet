@@ -15,6 +15,7 @@ import appCss from '../styles.css?url'
 import type { QueryClient } from '@tanstack/react-query'
 import { ThemeProvider } from '@/components/theme-provider'
 import { Layout } from '@/components/craft'
+import { Toaster } from '@/components/ui/sonner'
 
 interface MyRouterContext {
   queryClient: QueryClient
@@ -67,6 +68,7 @@ function RootDocument({ children }: { children: React.ReactNode }) {
       <body>
         <ThemeProvider storageKey="faucet-ui-theme" defaultTheme="dark">
           {children}
+          <Toaster position="top-center" />
         </ThemeProvider>
         <Scripts />
       </body>

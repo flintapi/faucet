@@ -14,8 +14,6 @@ import { Route as rootRoute } from './routes/__root'
 import { Route as IndexImport } from './routes/index'
 import { Route as DemoTanstackQueryImport } from './routes/demo.tanstack-query'
 import { Route as DemoStoreImport } from './routes/demo.store'
-import { Route as DemoStartServerFuncsImport } from './routes/demo.start.server-funcs'
-import { Route as DemoStartApiRequestImport } from './routes/demo.start.api-request'
 import { Route as DemoFormSimpleImport } from './routes/demo.form.simple'
 import { Route as DemoFormAddressImport } from './routes/demo.form.address'
 
@@ -36,18 +34,6 @@ const DemoTanstackQueryRoute = DemoTanstackQueryImport.update({
 const DemoStoreRoute = DemoStoreImport.update({
   id: '/demo/store',
   path: '/demo/store',
-  getParentRoute: () => rootRoute,
-} as any)
-
-const DemoStartServerFuncsRoute = DemoStartServerFuncsImport.update({
-  id: '/demo/start/server-funcs',
-  path: '/demo/start/server-funcs',
-  getParentRoute: () => rootRoute,
-} as any)
-
-const DemoStartApiRequestRoute = DemoStartApiRequestImport.update({
-  id: '/demo/start/api-request',
-  path: '/demo/start/api-request',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -102,20 +88,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DemoFormSimpleImport
       parentRoute: typeof rootRoute
     }
-    '/demo/start/api-request': {
-      id: '/demo/start/api-request'
-      path: '/demo/start/api-request'
-      fullPath: '/demo/start/api-request'
-      preLoaderRoute: typeof DemoStartApiRequestImport
-      parentRoute: typeof rootRoute
-    }
-    '/demo/start/server-funcs': {
-      id: '/demo/start/server-funcs'
-      path: '/demo/start/server-funcs'
-      fullPath: '/demo/start/server-funcs'
-      preLoaderRoute: typeof DemoStartServerFuncsImport
-      parentRoute: typeof rootRoute
-    }
   }
 }
 
@@ -127,8 +99,6 @@ export interface FileRoutesByFullPath {
   '/demo/tanstack-query': typeof DemoTanstackQueryRoute
   '/demo/form/address': typeof DemoFormAddressRoute
   '/demo/form/simple': typeof DemoFormSimpleRoute
-  '/demo/start/api-request': typeof DemoStartApiRequestRoute
-  '/demo/start/server-funcs': typeof DemoStartServerFuncsRoute
 }
 
 export interface FileRoutesByTo {
@@ -137,8 +107,6 @@ export interface FileRoutesByTo {
   '/demo/tanstack-query': typeof DemoTanstackQueryRoute
   '/demo/form/address': typeof DemoFormAddressRoute
   '/demo/form/simple': typeof DemoFormSimpleRoute
-  '/demo/start/api-request': typeof DemoStartApiRequestRoute
-  '/demo/start/server-funcs': typeof DemoStartServerFuncsRoute
 }
 
 export interface FileRoutesById {
@@ -148,8 +116,6 @@ export interface FileRoutesById {
   '/demo/tanstack-query': typeof DemoTanstackQueryRoute
   '/demo/form/address': typeof DemoFormAddressRoute
   '/demo/form/simple': typeof DemoFormSimpleRoute
-  '/demo/start/api-request': typeof DemoStartApiRequestRoute
-  '/demo/start/server-funcs': typeof DemoStartServerFuncsRoute
 }
 
 export interface FileRouteTypes {
@@ -160,8 +126,6 @@ export interface FileRouteTypes {
     | '/demo/tanstack-query'
     | '/demo/form/address'
     | '/demo/form/simple'
-    | '/demo/start/api-request'
-    | '/demo/start/server-funcs'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -169,8 +133,6 @@ export interface FileRouteTypes {
     | '/demo/tanstack-query'
     | '/demo/form/address'
     | '/demo/form/simple'
-    | '/demo/start/api-request'
-    | '/demo/start/server-funcs'
   id:
     | '__root__'
     | '/'
@@ -178,8 +140,6 @@ export interface FileRouteTypes {
     | '/demo/tanstack-query'
     | '/demo/form/address'
     | '/demo/form/simple'
-    | '/demo/start/api-request'
-    | '/demo/start/server-funcs'
   fileRoutesById: FileRoutesById
 }
 
@@ -189,8 +149,6 @@ export interface RootRouteChildren {
   DemoTanstackQueryRoute: typeof DemoTanstackQueryRoute
   DemoFormAddressRoute: typeof DemoFormAddressRoute
   DemoFormSimpleRoute: typeof DemoFormSimpleRoute
-  DemoStartApiRequestRoute: typeof DemoStartApiRequestRoute
-  DemoStartServerFuncsRoute: typeof DemoStartServerFuncsRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
@@ -199,8 +157,6 @@ const rootRouteChildren: RootRouteChildren = {
   DemoTanstackQueryRoute: DemoTanstackQueryRoute,
   DemoFormAddressRoute: DemoFormAddressRoute,
   DemoFormSimpleRoute: DemoFormSimpleRoute,
-  DemoStartApiRequestRoute: DemoStartApiRequestRoute,
-  DemoStartServerFuncsRoute: DemoStartServerFuncsRoute,
 }
 
 export const routeTree = rootRoute
@@ -217,9 +173,7 @@ export const routeTree = rootRoute
         "/demo/store",
         "/demo/tanstack-query",
         "/demo/form/address",
-        "/demo/form/simple",
-        "/demo/start/api-request",
-        "/demo/start/server-funcs"
+        "/demo/form/simple"
       ]
     },
     "/": {
@@ -236,12 +190,6 @@ export const routeTree = rootRoute
     },
     "/demo/form/simple": {
       "filePath": "demo.form.simple.tsx"
-    },
-    "/demo/start/api-request": {
-      "filePath": "demo.start.api-request.tsx"
-    },
-    "/demo/start/server-funcs": {
-      "filePath": "demo.start.server-funcs.tsx"
     }
   }
 }

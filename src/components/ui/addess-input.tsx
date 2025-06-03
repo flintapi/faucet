@@ -1,8 +1,9 @@
 'use client'
 
-import { CornerRightUp, Link2, Mic } from 'lucide-react'
+import { CornerRightUp, Link2 } from 'lucide-react'
 import { useState } from 'react'
-import { cn } from '@/lib/utils'
+import { useStore } from '@tanstack/react-store'
+import { toast } from 'sonner'
 import { Textarea } from '@/components/ui/textarea'
 import { useAutoResizeTextarea } from '@/hooks/use-auto-resize-textarea'
 import {
@@ -14,6 +15,8 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
+import { networkStore } from '@/lib/global-store'
+import { cn } from '@/lib/utils'
 
 interface AIInputProps {
   id?: string
@@ -24,46 +27,8 @@ interface AIInputProps {
   className?: string
 }
 
-const NETWORKS = [
-  {
-    name: 'Base sepolia',
-    label: 'BASE',
-    url: 'https://mainnet.com',
-    icon: 'MainnetIcon',
-    token: 'tETH',
-  },
-  {
-    name: 'Ethereum Sepolia',
-    label: 'ETH',
-    url: 'https://testnet.com',
-    icon: 'TestnetIcon',
-    token: 'tETH',
-  },
-  {
-    name: 'Polygon Mumbai',
-    label: 'MATIC',
-    url: 'https://testnet.com',
-    icon: 'TestnetIcon',
-    token: 'tMATIC',
-  },
-  {
-    name: 'Asset Chain Enugu',
-    label: 'RWA',
-    url: 'https://testnet.com',
-    icon: 'TestnetIcon',
-    token: 'tRWA',
-  },
-  {
-    name: 'Binance Smart Chain',
-    label: 'BNB',
-    url: 'https://testnet.com',
-    icon: 'TestnetIcon',
-    token: 'tBNB',
-  },
-]
-
 export function AddressInput({
-  id = 'ai-input',
+  id = 'address-input',
   placeholder = 'Enter receiving address...',
   minHeight = 52,
   maxHeight = 200,
@@ -74,13 +39,35 @@ export function AddressInput({
     minHeight,
     maxHeight,
   })
-  const [inputValue, setInputValue] = useState('')
-  const [network, setNetwork] = useState<string>()
+  const [inputValue, setInputValue] = useState<string>('')
+  const NETWORKS = useStore(networkStore, (state) => state.NETWORKS)
+  const selectedNetwork = useStore(networkStore, (state) => state.selected)
+  const setNetwork = (value: string) => {
+    networkStore.setState((state) => ({
+      ...state,
+      selected: state.NETWORKS.find((n) => n.label === value)?.label,
+    }))
+  }
+  const resetSelectedNetwork = () =>
+    networkStore.setState((state) => ({
+      ...state,
+      selected: undefined,
+    }))
 
   const handleReset = () => {
-    if (!inputValue.trim()) return
+    if (!inputValue.trim()) {
+      return toast.warning('Please input an address', {
+        description: 'Address is required to carry out the transaction',
+      })
+    }
+    if (!selectedNetwork?.trim()) {
+      return toast.warning('Please select a network', {
+        description: 'A network is required to carry out the transaction',
+      })
+    }
     onSubmit?.(inputValue)
     setInputValue('')
+    resetSelectedNetwork()
     adjustHeight(true)
   }
 
@@ -123,13 +110,13 @@ export function AddressInput({
               className={cn(
                 'absolute top-1/2 -translate-y-1/2  bg-black/5 dark:bg-white/5 py-1 px-1 transition-all duration-200',
                 inputValue ? 'right-10' : 'right-3',
-                network
+                selectedNetwork
                   ? 'rounded-lg px-2 flex items-center justify-center hover:cursor-pointer'
                   : 'rounded-xl',
               )}
             >
-              {network ? (
-                <span className="text-xs font-semibold">{network}</span>
+              {selectedNetwork ? (
+                <span className="text-xs font-semibold">{selectedNetwork}</span>
               ) : (
                 <Link2 className="w-4 h-4 text-black/70 dark:text-white/70" />
               )}
@@ -138,7 +125,10 @@ export function AddressInput({
           <DropdownMenuContent align="end">
             <DropdownMenuLabel>Supported Network</DropdownMenuLabel>
             <DropdownMenuSeparator />
-            <DropdownMenuRadioGroup value={network} onValueChange={setNetwork}>
+            <DropdownMenuRadioGroup
+              value={selectedNetwork}
+              onValueChange={setNetwork}
+            >
               {NETWORKS.map((item, index) => (
                 <DropdownMenuRadioItem key={index} value={item.label}>
                   {item.label}
